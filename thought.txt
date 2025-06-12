@@ -1,0 +1,41 @@
+gestion du stockage de partie CSV
+
+	ligne 1 >
+		
+		mode ; taille ; dernier joueur (0/1)
+		
+	ligne 2 >		si mode = 1
+		display0 ; lord0 ; (atkr)(0) 0 ; 0 ; 0 ; 0 ; 0 ; (1) 0 ; 0 ; 0 ; 0 ; 0 ; display1
+				si mode = 0 
+		display0 ; lord0 ; display1 ; lord1 etc
+
+	ligne 3 >
+
+		len0 ; 
+	
+	ligne 4 > 
+
+		len0 * pièces en char ;
+
+	ligne 4 > 
+
+		len1 ; 
+ 
+	ligne 5 >
+	
+		len1 * pièces en char ;
+
+
+decipher( )
+
+	résurrection de chessboard >
+	int l2i = 0 ::il sera incrémenté à chaque action (trop smart)
+	i in range(len) i+1
+		j in range(len) j+1 ::chaque case 
+			cb[x][y].display = l2[l2i++];
+			cb[x][y].lord = l2[l2i++];
+			atkri in range(2)
+				atkrj in range(5)
+					cb[x][y].atkr[atkri][atkrj] = l2[l2i++]
+
+	
