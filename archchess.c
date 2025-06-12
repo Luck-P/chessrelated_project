@@ -19,11 +19,8 @@ void setup(int chornw,int mode){    //chornw : "charger ou nouvelle" -> 1/0 repr
                 printf("dimension de l'echiquier entre 6 & 12 (donnez le cote uniquement) : ");
                 if(scanf("%d",&size)!=1){flusher();}    //vérifie que l'input donné est bien un entier
             }while(size<6 || size>12);
-            //cell **chessboard = makeboard(size);    //définie un nouvel échiquier vierge
-            //display(chessboard,size);   //debug
-            //hnd *hands = malloc(2*sizeof(hnd));     //heap plutôt que stack : plus simple pour passer les arguments en tant que pointeurs (actualisation + simple)
-                                                    // -> inutile : hlist & len sont déjà des pointers !
-            hnd hands[2];                           //dès lors nous stackons : 
+            
+            hnd hands[2];                           //stack plutôt que heap car les attributs du struct hnd sont déjà des pointeurs
             hands[0]=defhand();hands[1]=defhand();  // 2 mains complètes définies sous forme de pointers 
             gameplan(makeboard(size,mode),size,0,hands,mode);    //appelle gameplan(...) qui lance la partie à proprement parler
             break;
@@ -78,9 +75,7 @@ void gameplan(cell **chessboard,int len,int whpl,hnd *hands,int mode){ //boucle 
                 continue;
             }//si le joueur 2 reprend : on passe le premier tour du joueur 1 
 
-            //atkrdispdebug(chessboard,len);
-
-            //display(chessboard,len);
+        
             display_v2(chessboard,len);
 
             end = turnaction(player,mode,chessboard,len,hands);//fonction balise : soit éteint le programme / soit le laisse poursuivre normalement 
@@ -91,8 +86,7 @@ void gameplan(cell **chessboard,int len,int whpl,hnd *hands,int mode){ //boucle 
             end = modeover(hands);
         }
         
-    }   //end bugué : ne s'arrête pas 
-        //problème trouvé : hand.len appelé dans conqover -> est un pointeur | la valeur de len se trouve à .len[0] 
+    }  
     display_v2(chessboard,len);fflush(stdout); //le buffer n'était pas totalement imprimé que déjà winner() changeait la couleur du terminal : nous marquons donc une pause
     winner(chessboard,len);
     fullfree(chessboard,len,hands);
@@ -100,11 +94,7 @@ void gameplan(cell **chessboard,int len,int whpl,hnd *hands,int mode){ //boucle 
 
 void gameturn(cell **cboard,int len,int crpl,hnd cphand,crd (*checkpos)(cell**,int,crd,char,int),int (*cpcheck)(hnd,cell**,int,int),void (*modeatk)(cell**,int,crd,int)){// crpl : current player (joueur actuel) 
 
-    //display(cboard,len);
-
     
-    
-    //printf("\nAu joueur %d de jouer\nVos pieces disponibles : ",crpl+1); //crpl+1 : 0 -> joueur 1 | 1 -> joueur 2
     printf("Vos pieces disponibles \033[90m(passer son tour e)\033[0m : ");
     for(int i=0;i<cphand.len[0];i++){   //.len[0] since it's a pointer (remember /!\)
         printf("%c ",cphand.hlist[i]);
@@ -120,7 +110,6 @@ void gameturn(cell **cboard,int len,int crpl,hnd cphand,crd (*checkpos)(cell**,i
     //placement de la pièce choisie sur l'échiquier  
 
     crd pos = checkpos(cboard,len,getpos(len),chpc,crpl);    
-    //printf("pos : %d %d",pos.x,pos.y);
 
     cboard[pos.x][pos.y].display = chpc;
     cboard[pos.x][pos.y].lord = crpl+1; //joueur 1 : crpl = 0 / lord = 1 | joueur 2 : crpl = 1 / lord = 2

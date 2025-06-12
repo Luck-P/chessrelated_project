@@ -19,16 +19,12 @@ int cnpcheck(hnd crhand,cell **board,int blen,int crpl){ //lorsque l'utilisateur
     if(chpc == 'e'){return -1;}
     for(int i = 0;i<crhand.len[0];i++){
         if(crhand.hlist[i] == chpc){        //si on trouve une pièce valide dans la main ...
-            //printf("\ndebug 1 : %c in list\n",chpc);
             int h = atkindex(chpc);         //h = hiérarchie 
             for(int x = 0;x<blen;x++){      //on parcourt chaque case de l'échiquier
                 for(int y=0;y<blen;y++){
                     if(chpc == 'p' || (board[x][y].display == ' ' && board[x][y].atkr[crpl][h-1] && board[x][y].lord == crpl+1)){  //si la case parcourue est attaquée par la pièce précédente hiérarchiquement  
-                        //printf("\ndebug 2 : returning\ncell : (%d,%d)\nnatkr : %d\nchpc : %c\n",x,y,board[x][y].atkr[crpl][h-1],chpc);
                         return i;               //on renvoie l'indice de la pièce dans hlist 
-                    }/*else{  //debug process (to dispose of)
-                        printf("\ndebug 2.1 :\nx - y : %d - %d \n h-1 = %d\natkr = %d\n",x,y,h-1,board[x][y].atkr[crpl][h-1]);
-                    }*/
+                    }
                 }
             }
         }
@@ -45,7 +41,6 @@ crd concheckpos(cell **cboard,int blen,crd pos,char pc,int crpl){
 }
 
 int conover(hnd *hands){
-    //printf("\nkisin p1 : %d\nkisin p2 : %d\nconover : %d",kisin(hands[0]),kisin(hands[1]),(kisin(hands[0]) && kisin(hands[1])) ? 0:1);
     return (kisin(hands[0]) && kisin(hands[1])) ? 0:1;
 }
 
