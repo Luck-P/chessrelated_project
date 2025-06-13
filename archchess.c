@@ -28,7 +28,6 @@ void setup(int chornw,int mode){    //chornw : "charger ou nouvelle" -> 1/0 repr
 
         case 1:{
             dcphr gbo = decipher(".\\gamesave.csv");
-            printf("retrieval done ");
             gameplan(gbo.chessboard,gbo.len,gbo.pltp,gbo.hands,gbo.mode);
             break;
         }

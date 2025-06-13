@@ -25,12 +25,12 @@ int main(){
 
         switch(mmenu()){
             case 0 : {
-                printf("\nAu revoir !");
+                printf("\nAu revoir !\n");
                 return 0;
             }
 
             case 2 : {
-                printf("\nReprendre une Partie >");
+                printf("\nReprendre une Partie >\n");
                 setup(1,-1);    //mode is yet to be retrieved
                 break;
             }
