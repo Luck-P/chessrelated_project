@@ -199,8 +199,6 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
         }
         free(rl);
     }
-    printf("\n%d | %d\n",gbo.hands[0].len[0],gbo.hands[1].len[0]);
-    printf("\n\n%s\n",gbo.hands[1].hlist);
     fclose(csvf);
     return gbo;
 }   
