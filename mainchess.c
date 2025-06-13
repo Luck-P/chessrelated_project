@@ -9,7 +9,6 @@ int mmenu();//display the chess game main menu - asks user for choice
 int checkinput(int wmenu); //check if the input matches the chosen function's expectations
 
 int main(){
-    //system("color d");
 
     //implémentation boucle programme 
 
@@ -38,7 +37,6 @@ int main(){
 
             case 11 : {
                 printf("\nNouvelle Partie > Mode Conquete\n");
-                //conqsetup(0);
                 setup(0,0);
                 break;
             }
@@ -165,7 +163,7 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
     }
     gbo.chessboard = malloc(gbo.len*sizeof(cell*));for(int i=0;i<gbo.len;i++){gbo.chessboard[i] = malloc(gbo.len*sizeof(cell));} //nous définissons l'échiquier à retourner...
 
-    //chessboard retrieval (banger)
+    //chessboard retrieval 
     int li = 0;
     for(int i = 0;i<gbo.len;i++){
         for(int j=0;j<gbo.len;j++){
@@ -183,8 +181,8 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
     free(rl);
 
     //ligne 3 : récupération des tailles des mains
-    //char *l3[2]; il n'est même pas utile de créer une ligne, autant attribuer immédiatement les valeurs aux variables 
     rl = malloc(8*sizeof(char));    //xx;xx;\n\0 caracters
+    fgets(rl,8*sizeof(char),csvf);
     gbo.hands[0].len = malloc(sizeof(int));gbo.hands[1].len = malloc(sizeof(int));
     gbo.hands[0].len[0]= atoi(strtok(rl,";"));
     gbo.hands[1].len[0]= atoi(strtok(NULL,";"));
@@ -201,8 +199,8 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
         }
         free(rl);
     }
+    printf("\n%d | %d\n",gbo.hands[0].len[0],gbo.hands[1].len[0]);
     printf("\n\n%s\n",gbo.hands[1].hlist);
     fclose(csvf);
     return gbo;
 }   
-
