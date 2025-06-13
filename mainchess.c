@@ -9,7 +9,6 @@ int mmenu();//display the chess game main menu - asks user for choice
 int checkinput(int wmenu); //check if the input matches the chosen function's expectations
 
 int main(){
-    //system("color d");
 
     //implémentation boucle programme 
 
@@ -38,7 +37,6 @@ int main(){
 
             case 11 : {
                 printf("\nNouvelle Partie > Mode Conquete\n");
-                //conqsetup(0);
                 setup(0,0);
                 break;
             }
@@ -107,7 +105,7 @@ void fullfree(cell **board,int dim,hnd hands[2]){
 
 void cipher(int mode,int len,int lastpl, cell **board,hnd hands[2]){  //fonction encodant le mode ; l'échiquier ; et les 2 mains -> on a ainsi une séquence display;lord;atkr;display;lord etc 
     FILE *csvf = fopen(".\\gamesave.csv","w");
-    if(!csvf){printf("masterchiasse ! l'ouverture a échouée");return;}
+    if(!csvf){printf("\nl'ouverture a échouée");return;}
     //première ligne : mode ; taille ; dernier joueur ;
     fprintf(csvf,"%d;%d;%d;\n",mode,len,lastpl);    //on garde le joueur qui a sauvegardé, car il n'a alors pas joué son tour                  
     //2e ligne : tout l'échiquier 
@@ -140,7 +138,6 @@ void cipher(int mode,int len,int lastpl, cell **board,hnd hands[2]){  //fonction
 dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.csv mais cette flexibilité nous servira pour le debug 
     FILE *csvf = fopen(path,"r");
     dcphr gbo;  //notre struct permettant de retourner toutes les variables en sortie de fonction 
-    printf("\nis open\n");
     //ligne 1 : récupérer le mode ; la taille de l'échiquier ; le joueur qui reprend
     char *rl,*l1[3];
     rl = malloc(9 * sizeof(char));    //taille max : "1;12;1;\n\0" soit 9 caractères | précision maximale : peu recommandée mais plus intéressante pédagogiquement
@@ -151,8 +148,6 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
     }//-> nous avons récupéré le mode de jeu (l1[0]) la taille de l'échiquier (l1[1]) et enfin le dernier joueur en date (l1[2])
     gbo.mode=atoi(l1[0]),gbo.len = atoi(l1[1]),gbo.pltp = atoi(l1[2]);  //nous retournerons nos variables dans tous les cas : autant les initialiser tout de suite
     free(rl);//for(int i=0;i<3;i++){free(l1[i]);};  //on nettoie rapidement nos pointers puisque plus utilisés
-
-    printf("\nfirst line done\n");
 
     //ligne 2 : récupérer tout le tableau 
         //taille * taille cases -> 1char display + ; + 0/1/2 lord + ; + (mode 0/1) rien:2*0;0;0;0;0; -> \n\0 en bout de ligne
@@ -168,7 +163,7 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
     }
     gbo.chessboard = malloc(gbo.len*sizeof(cell*));for(int i=0;i<gbo.len;i++){gbo.chessboard[i] = malloc(gbo.len*sizeof(cell));} //nous définissons l'échiquier à retourner...
 
-    //chessboard retrieval (banger)
+    //chessboard retrieval 
     int li = 0;
     for(int i = 0;i<gbo.len;i++){
         for(int j=0;j<gbo.len;j++){
@@ -183,23 +178,15 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
             }
         }
     }
-    //display_v2(gbo.chessboard,gbo.len);    //quick debug
     free(rl);
 
-    printf("\n2nd line done\n");
-
     //ligne 3 : récupération des tailles des mains
-    //char *l3[2]; il n'est même pas utile de créer une ligne, autant attribuer immédiatement les valeurs aux variables 
     rl = malloc(8*sizeof(char));    //xx;xx;\n\0 caracters
-    if(fgets(rl,8*sizeof(char),csvf)==NULL){printf("you stoopid nigg...");}; 
-    printf("\n%s\n",rl);   
+    fgets(rl,8*sizeof(char),csvf);
     gbo.hands[0].len = malloc(sizeof(int));gbo.hands[1].len = malloc(sizeof(int));
     gbo.hands[0].len[0]= atoi(strtok(rl,";"));
     gbo.hands[1].len[0]= atoi(strtok(NULL,";"));
-    printf("nigga whaaat");
     free(rl);
-
-    printf("\n3rd line done\n");
 
     //ligne 4 & 5 : récupération du contenu des mains 
     for(int plh=0;plh<2;plh++){
@@ -212,7 +199,8 @@ dcphr decipher(char *path){  //normalement toujours le même chemin ./gamesave.c
         }
         free(rl);
     }
+    printf("\n%d | %d\n",gbo.hands[0].len[0],gbo.hands[1].len[0]);
+    printf("\n\n%s\n",gbo.hands[1].hlist);
     fclose(csvf);
     return gbo;
 }   
-

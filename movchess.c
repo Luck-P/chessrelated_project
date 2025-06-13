@@ -19,11 +19,6 @@ void atkset(cell**,int,crd,int);
 
 void takeover(cell **chessboard,int blen,crd lpcpos,void (*dwset)(cell**,int,crd,int)){ //lpcpos = position de la dernière pièce 
 
-    /*void (*pcbeha)(cell**,int,int,crd);  //pcbeha = comportement de la pièce : une fonction par pièce car ayant des déplacements uniques 
-                                        // on peut tout de même repomper les vérifications classiques (toute une diagonale / toute une ligne etc)
-                                        // -> mauvaise idée : poser queen() = bishop();rook(); (seul "repompage" possible)
-    pcbeha = chessboard[lpcpos.x][lpcpos.y].display;    //.display donne la pièce en question (p, r, n, b, q, k) : nous nommons nos fonctions en conséquence
-    */  //no automated linking like in python : 'p' != p() | only solution : big switch 
     switch(chessboard[lpcpos.x][lpcpos.y].display){
 
         case 'p':   pawn(chessboard,blen,lpcpos,dwset);break; 
@@ -40,7 +35,6 @@ void takeover(cell **chessboard,int blen,crd lpcpos,void (*dwset)(cell**,int,crd
         case 'k':   king(chessboard,blen,lpcpos);break;
     }       
 
-    //tkdebug(chessboard,blen);
 }
 
 
@@ -62,7 +56,6 @@ void pawn(cell **chessboard,int blen,crd pos,void (*dwset)(cell**,int,crd,int)){
         } 
     }
     
-    //printf("\npawn() debug : ud = %d\n",ud);
 
     for(int i=0;i<2;i++){       //pour parcourir la liste lr (gauche / droite) -> on vérifie ainsi la gauche puis la droite de la pièce
         if(
@@ -195,12 +188,6 @@ void atkset(cell **board,int crpl,crd pos, int pcid){ //administre l'attribut .a
 void atkdecoy(cell **,int,crd,int){
     //does nothing, as in conqmode 
 }
-
-/*void atkres(cell **board,crd pos){  //réinitialise .atkr (à chaque changement de possession)
-    for(int i=0;i<5;i++){
-        board[pos.x][pos.y].atkr[i] = 0;
-    }
-} -> on ne réinitialise plus : 2 tableaux désormais (un par joueur)*/
 
 void tkdebug(cell **board,int blen){
     for(int i=0;i<blen;i++){
