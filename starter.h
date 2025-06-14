@@ -8,11 +8,12 @@ typedef struct{
     int pltp;
     cell **chessboard;
     hnd hands[2];
-}dcphr;
+}dcphr; //reprend tout simplement toutes les variables de jeu précédemment crées 
 
 //mainchess.c 
 void cipher(int,int,int,cell**,hnd*);
 dcphr decipher(char*);
+
 //archchess.c
 void setup(int,int);
 
