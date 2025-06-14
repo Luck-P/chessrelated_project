@@ -27,8 +27,8 @@ void setup(int chornw,int mode){    //chornw : "charger ou nouvelle" -> 1/0 repr
         }
 
         case 1:{
-            dcphr gbo = decipher(".\\gamesave.csv");
-            gameplan(gbo.chessboard,gbo.len,gbo.pltp,gbo.hands,gbo.mode);
+            dcphr gbo = decipher(".\\gamesave.csv");    //nous récupérons toutes nos variables de jeu 
+            gameplan(gbo.chessboard,gbo.len,gbo.pltp,gbo.hands,gbo.mode);   //on relance gameplan() avec ces variables récupérées
             break;
         }
     }
@@ -62,40 +62,39 @@ void gameplan(cell **chessboard,int len,int whpl,hnd *hands,int mode){ //boucle 
         }
     }
 
-    //printf("\nwe're in the loop");
 
     while(end==0){                  //boucle while lançant des boucles for de 2 itérations (j1 puis j2) jusqu'à la fin de la partie
                                     //while inutile en mode conquête mais pratique en mode connecte
 
         for(int player = 0;player<2 && end==0;player++){
             
-            if(skat){
+            if(skat){       //skat étant la version locale de whpl, le test est optimisé par le compilateur
                 skat=0;
                 continue;
             }//si le joueur 2 reprend : on passe le premier tour du joueur 1 
 
         
-            display_v2(chessboard,len);
+            display_v2(chessboard,len);     //à chaque tour nous affichons l'échiquier 
 
             end = turnaction(player,mode,chessboard,len,hands);//fonction balise : soit éteint le programme / soit le laisse poursuivre normalement 
             if(end==2){fullfree(chessboard,len,hands);return;}
 
             gameturn(chessboard,len,player,hands[player],checkpos,cpcheck,modeatk); //soit conqturn soit conturn en fonction du %mode% passé initialement  
             
-            end = modeover(hands);
+            end = modeover(hands);  //modeover() pour vérifier si la partie est finie
         }
         
     }  
     display_v2(chessboard,len);fflush(stdout); //le buffer n'était pas totalement imprimé que déjà winner() changeait la couleur du terminal : nous marquons donc une pause
-    winner(chessboard,len);
-    fullfree(chessboard,len,hands);
+    winner(chessboard,len);     //nous appelons la fonction de victoire
+    fullfree(chessboard,len,hands); //à la fin d'une partie, nous nettoyons tous nos pointers pour éviter les fuites de mémoire
 } 
 
 void gameturn(cell **cboard,int len,int crpl,hnd cphand,crd (*checkpos)(cell**,int,crd,char,int),int (*cpcheck)(hnd,cell**,int,int),void (*modeatk)(cell**,int,crd,int)){// crpl : current player (joueur actuel) 
 
     
     printf("Vos pieces disponibles \033[90m(passer son tour e)\033[0m : ");
-    for(int i=0;i<cphand.len[0];i++){   //.len[0] since it's a pointer (remember /!\)
+    for(int i=0;i<cphand.len[0];i++){   //.len[0] car il s'agit d'un pointeur 
         printf("%c ",cphand.hlist[i]);
     }printf("\n");
 
@@ -132,7 +131,7 @@ void winner(cell **chessboard,int blen){
         printf("\nEgalite ! ");
         return;
     }
-    system("start /MIN .\\win.mp3");
+    system("start /MIN .\\win.mp3");    //nous lancons un petit effet sonore de victoire
     printf("\n\n\033[32mLe joueur %d remporte la partie avec %d cases conquises\033[0m\n\n\n",max,scores[max-1]);
 }
 

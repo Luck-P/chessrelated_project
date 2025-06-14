@@ -24,11 +24,11 @@ void takeover(cell **chessboard,int blen,crd lpcpos,void (*dwset)(cell**,int,crd
         case 'p':   pawn(chessboard,blen,lpcpos,dwset);break; 
                                         //joueur actuel est donnée par .lord de la case lpcpos : nous passons la valeur graphique (1 ou 2) car c'est celle qui est ensuite passée en .lord 
 
-        case 'r':   rook(chessboard,blen,lpcpos,3,dwset);break;   //3 for piece's id in hierarchy
+        case 'r':   rook(chessboard,blen,lpcpos,3,dwset);break;   //3 correspond au rang hiérarchique de la pièce, à placer dans atkr en mode Connecte
 
         case 'n':   knight(chessboard,blen,lpcpos,dwset);break;
 
-        case 'b':   bishop(chessboard,blen,lpcpos,2,dwset);break; //same as rook
+        case 'b':   bishop(chessboard,blen,lpcpos,2,dwset);break; //comme pour la tour 
 
         case 'q':   queen(chessboard,blen,lpcpos,dwset);break;
 
@@ -85,7 +85,7 @@ void rook(cell **cboard,int blen,crd pos,int own,void (*dwset)(cell**,int,crd,in
             cboard[pos.x + (i*lrud[dir])][pos.y].display == ' '         //... et que la case suivante est bien vide (une case occupée bloque la conquête et ce peu importe l'affiliation de la pièce)
         ){                                                                          
             cboard[pos.x +(i*lrud[dir])][pos.y].lord = cboard[pos.x][pos.y].lord;
-            dwset(cboard,cboard[pos.x][pos.y].lord - 1,(crd){pos.x + (i*lrud[dir]),pos.y},own);
+            dwset(cboard,cboard[pos.x][pos.y].lord - 1,(crd){pos.x + (i*lrud[dir]),pos.y},own); //en mode connecte, nous remplissons atkr 
             i++;
         }
 
@@ -101,7 +101,7 @@ void rook(cell **cboard,int blen,crd pos,int own,void (*dwset)(cell**,int,crd,in
 
     }
 
-}   //rook ok
+}   
 
 void bishop(cell **cboard,int blen,crd pos,int own,void (*dwset)(cell**,int,crd,int)){
     int lrud[2] = {-1,1};
@@ -186,10 +186,10 @@ void atkset(cell **board,int crpl,crd pos, int pcid){ //administre l'attribut .a
 }
 
 void atkdecoy(cell **,int,crd,int){
-    //does nothing, as in conqmode 
+    //fonction antagoniste de atkset -> sert à combler le pointeur de fonction dwset mais ne fait rien 
 }
 
-void tkdebug(cell **board,int blen){
+void tkdebug(cell **board,int blen){        //fonction inutile affichant le tableau des attributs lord, très pratique pour le debug 
     for(int i=0;i<blen;i++){
         printf("\n");
         for(int j=0;j<blen;j++){
@@ -198,7 +198,7 @@ void tkdebug(cell **board,int blen){
     }
 }
 
-void atkrdispdebug(cell **board,int blen){
+void atkrdispdebug(cell **board,int blen){  //Cf tkdebug cette fois ci pour tous les tableaux atkr 
     printf("\n");
     for(int pl = 0 ; pl<2;pl++){
         for(int ln=0;ln<blen;ln++){

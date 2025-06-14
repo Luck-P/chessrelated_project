@@ -12,7 +12,7 @@ void conq1copy(){
 int cqpcheck(hnd crhand,cell **n1,int n2,int n3){      //chosen-piece check : vérifie si l'input est bien un char puis s'il est bien inclu dans la "main" (liste de pièce disponible)
                                                 //comme dans conqcheckpos() : nous passons des variables inutiles, normalement sans incidence sur la cpu
                                                 //certes moins propre, nous obtenons en contrepartie une fonction "tour de jeu" très générique et sans redondance
-    char chpc; //chosen piece    
+    char chpc; //chosen piece    -> pièce choisie
     printf("choississez une piece : ");
     if(scanf(" %c",&chpc)!=1){flusher();}   //nettoie le buffer si l'entrée n'est pas un char
     if(chpc == 'e'){return -1;}

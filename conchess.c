@@ -13,7 +13,7 @@ void con1copy(){
 
 int cnpcheck(hnd crhand,cell **board,int blen,int crpl){ //lorsque l'utilisateur choisit une pièce, il faut déjà vérifier qu'il ait le droit 
                 //solution : vérifier qu'il existe au moins 1 case compatible avec la pièce choisie
-    char chpc; //chosen piece    
+    char chpc; //chosen piece -> pièce choisie
     printf("choississez une piece : ");
     if(scanf(" %c",&chpc)!=1){flusher();}   //nettoie le buffer si l'entrée n'est pas un char
     if(chpc == 'e'){return -1;}
